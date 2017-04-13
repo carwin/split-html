@@ -1,31 +1,8 @@
 (function() {
   var cheerio;
-  if (typeof window === 'undefined') {
-    // node
-    module.exports = splitHtml;
-    cheerio = require('cheerio');
-  } else {
-    window.splitHtml = splitHtml;
-    // In the browser, use actual jQuery in place of Cheerio.
-    // Create a simulated cheerio object.
-    cheerio = {
-      load: function(html) {
-        var $wrapper = jQuery('<div data-cheerio-root>');
-        var $el = jQuery(html);
-        $wrapper.append($el);
-        function c(s) {
-          if (s[0] === '<') {
-            return jQuery(s);
-          }
-          return $wrapper.find(s);
-        }
-        c.html = function() {
-          return $wrapper.html();
-        };
-        return c;
-      },
-    };
-  }
+  module.exports = splitHtml;
+  cheerio = require('cheerio');
+
   function splitHtml(html, splitOn, test) {
     if (!test) {
       test = function($el) {
